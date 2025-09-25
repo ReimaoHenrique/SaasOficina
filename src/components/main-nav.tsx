@@ -56,18 +56,17 @@ export function MainNav() {
               const Icon = item.icon;
               return (
                 <NavigationMenuItem key={item.href}>
-                  <Link href={item.href} legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        "flex items-center gap-2",
-                        active ? "bg-accent text-accent-foreground" : ""
-                      )}
-                    >
-                      <Icon className="h-4 w-4" />
-                      {item.name}
-                    </NavigationMenuLink>
-                  </Link>
+                  <NavigationMenuLink
+                    href={item.href}
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      "flex items-center gap-2",
+                      active ? "bg-accent text-accent-foreground" : ""
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {item.name}
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               );
             })}
