@@ -231,10 +231,11 @@ export function Camera({ onCapture, trigger, className }: CameraProps) {
                 <div className="absolute bottom-4 left-0 right-0 flex justify-center">
                   <Button
                     onClick={captureImage}
-                    className="h-16 w-16 rounded-full"
+                    className="h-16 w-16 rounded-full p-0 bg-white/20 hover:bg-white/30 backdrop-blur-sm border-2 border-white/30"
+                    variant="ghost"
                     size="icon"
                   >
-                    <Camera className="h-8 w-8" />
+                    <Camera className="h-8 w-8 text-white" />
                   </Button>
                 </div>
               </div>
