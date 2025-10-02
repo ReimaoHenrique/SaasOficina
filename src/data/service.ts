@@ -219,6 +219,40 @@ export const veiculosData: Veiculo[] = [
       },
     ],
   },
+  {
+    id: "JDM-888",
+    veiculo: "Subaru Impreza GC8",
+    placa: "JDM-888",
+    servicos: [
+      {
+        ordensServico: "Troca de embreagem",
+        veiculo: "Subaru Impreza GC8",
+        placa: "JDM-888",
+        descricao: "Troca completa do kit de embreagem",
+        dataEntrada: "28/09/2023",
+        status: "concluido",
+        prioridade: "alta",
+        valor: 850.0,
+        observacoes: "Cliente solicitou embreagem de alta performance",
+        fotos: [
+          {
+            id: "subaru-1",
+            url: "/subaru.webp",
+            tipo: "antes",
+            descricao: "Subaru Impreza GC8 antes da troca",
+            data: "28/09/2023 08:30",
+          },
+          {
+            id: "subaru-3",
+            url: "/subaru-lado-1.jpg",
+            tipo: "depois",
+            descricao: "Embreagem nova instalada - vista lateral",
+            data: "29/09/2023 16:45",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 // Dados de serviços (compatibilidade com código existente)
