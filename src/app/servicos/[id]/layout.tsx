@@ -3,11 +3,12 @@ import { getVeiculoById, getServicosByVeiculoId, type Veiculo, type Servico } fr
 
 interface LayoutProps {
   children: React.ReactNode;
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
-  const veiculo: Veiculo | undefined = getVeiculoById(params.id);
+  const { id } = await params;
+  const veiculo: Veiculo | undefined = getVeiculoById(id);
 
   if (!veiculo) {
     return {
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
     };
   }
 
-  const servicos: Servico[] = getServicosByVeiculoId(params.id);
+  const servicos: Servico[] = getServicosByVeiculoId(id);
   const primeiroServico: Servico | undefined = servicos[0];
   const primeiraFoto = primeiroServico?.fotos.find(foto => foto.tipo === "antes") || primeiroServico?.fotos[0];
 
@@ -51,7 +52,7 @@ ${primeiroServico ? `Último serviço: ${primeiroServico.descricao}` : ''}`;
     openGraph: {
       title: titulo,
       description: descricao,
-      url: `https://saasoficina.vercel.app/servicos/${params.id}`,
+      url: `https://saasoficina.vercel.app/servicos/${id}`,
       siteName: 'SaaS Oficina',
       images: primeiraFoto ? [
         {
@@ -76,8 +77,10 @@ ${primeiroServico ? `Último serviço: ${primeiroServico.descricao}` : ''}`;
   };
 }
 
-export default function Layout({ children, params }: LayoutProps) {
-  console.log('Vehicle ID:', params.id);
+export default async function Layout({ children, params }: LayoutProps) {
+  const { id } = await params;
+  console.log('Vehicle ID:', id);
+
   return (
     <>
       {children}
