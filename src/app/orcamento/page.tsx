@@ -7,7 +7,6 @@ import {
   Plus,
   Calculator,
   ChevronRight,
-  FileText,
   DollarSign,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";

@@ -33,7 +33,7 @@ export type Orcamento = {
 };
 
 // Dados de exemplo - em um aplicativo real, isso viria de uma API ou banco de dados
-let orcamentos: Orcamento[] = [
+const orcamentos: Orcamento[] = [
   {
     id: "1",
     numero: "ORC-2024-001",

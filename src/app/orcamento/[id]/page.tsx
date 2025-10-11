@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Calculator,
@@ -9,7 +8,6 @@ import {
   Printer,
   Edit,
   DollarSign,
-  Calendar,
   Phone,
   Mail,
   Car,
@@ -39,7 +37,6 @@ export default function OrcamentoDetailPage({
 }: {
   params: { id: string };
 }) {
-  const router = useRouter();
   const [orcamento, setOrcamento] = useState<Orcamento | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -346,7 +343,7 @@ export default function OrcamentoDetailPage({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {orcamento.servicos.map((servico, index) => (
+                {orcamento.servicos.map((servico) => (
                   <TableRow key={servico.id}>
                     <TableCell className="font-medium">
                       {servico.descricao}

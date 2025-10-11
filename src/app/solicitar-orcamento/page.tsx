@@ -7,11 +7,7 @@ import {
   Send,
   Car,
   User,
-  Phone,
-  Mail,
-  MapPin,
   Wrench,
-  Clock,
   MessageSquare,
   CheckCircle,
   ArrowLeft,
@@ -32,8 +28,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   createSolicitacao,
-  getTipoServicoText,
-  getUrgenciaText,
   type TipoServico,
   type UrgenciaServico,
 } from "@/data/solicitacao-orcamento";
