@@ -4,7 +4,17 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Home, Car, Wrench, User, Info, Phone, Menu, X } from "lucide-react";
+import {
+  Home,
+  Calculator,
+  Wrench,
+  User,
+  Info,
+  Phone,
+  Menu,
+  X,
+  FileText,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import {
   NavigationMenu,
@@ -27,7 +37,12 @@ export function MainNav() {
 
   const navItems: NavItem[] = [
     { name: "Início", href: "/", icon: Home, matchExact: true },
-    { name: "Veículos", href: "/veiculos", icon: Car, matchExact: false },
+    {
+      name: "Orçamento",
+      href: "/orcamento",
+      icon: Calculator,
+      matchExact: false,
+    },
     { name: "Serviços", href: "/servicos", icon: Wrench, matchExact: false },
     { name: "Sobre", href: "/sobre", icon: Info, matchExact: true },
     { name: "Contato", href: "/contato", icon: Phone, matchExact: true },
@@ -80,6 +95,12 @@ export function MainNav() {
 
         {/* Mobile menu button - Right */}
         <div className="flex items-center gap-4">
+          <Link href="/solicitar-orcamento" className="hidden md:block">
+            <Button size="sm" className="gap-2">
+              <FileText className="h-4 w-4" />
+              Solicitar Orçamento
+            </Button>
+          </Link>
           <Button variant="outline" size="sm" className="hidden md:flex">
             <User className="mr-2 h-4 w-4" />
             Entrar
@@ -125,8 +146,18 @@ export function MainNav() {
                 </Link>
               );
             })}
-            <div className="px-4 py-2">
+            <div className="px-4 py-2 space-y-2">
+              <Link href="/solicitar-orcamento" className="block">
+                <Button
+                  className="w-full gap-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <FileText className="h-4 w-4" />
+                  Solicitar Orçamento
+                </Button>
+              </Link>
               <Button
+                variant="outline"
                 className="w-full"
                 onClick={() => setMobileMenuOpen(false)}
               >
