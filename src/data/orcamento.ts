@@ -261,3 +261,4 @@ export const searchOrcamentos = (term: string): Orcamento[] => {
       orcamento.placa.toLowerCase().includes(termLower)
   );
 };
+

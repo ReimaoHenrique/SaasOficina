@@ -20,6 +20,7 @@ import {
   veiculosData,
   type Servico,
 } from "@/data/service";
+import { ProtectedRoute } from "@/components/protected-route";
 
 export default function ServicosPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -100,141 +101,147 @@ export default function ServicosPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">Serviços</h1>
-          <p className="text-gray-600">Acompanhe os serviços da oficina</p>
-        </div>
-        <Link href="/servicos/novo">
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            Novo Serviço
-          </Button>
-        </Link>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm border p-4 mb-6 space-y-4">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              type="text"
-              placeholder="Buscar por veículo, placa ou descrição..."
-              className="pl-10"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+    <ProtectedRoute>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div>
+            <h1 className="text-2xl font-bold">Serviços</h1>
+            <p className="text-gray-600">Acompanhe os serviços da oficina</p>
           </div>
+          <Link href="/servicos/novo">
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" />
+              Novo Serviço
+            </Button>
+          </Link>
+        </div>
 
-          <div className="flex items-center space-x-2 overflow-x-auto pb-2 md:pb-0">
-            <Button
-              variant={statusFilter === "todos" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setStatusFilter("todos")}
-            >
-              Todos
-            </Button>
-            <Button
-              variant={statusFilter === "pendente" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setStatusFilter("pendente")}
-            >
-              Pendentes
-            </Button>
-            <Button
-              variant={statusFilter === "em_andamento" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setStatusFilter("em_andamento")}
-            >
-              Em Andamento
-            </Button>
-            <Button
-              variant={
-                statusFilter === "aguardando_pecas" ? "default" : "outline"
-              }
-              size="sm"
-              onClick={() => setStatusFilter("aguardando_pecas")}
-            >
-              Aguardando Peças
-            </Button>
-            <Button
-              variant={statusFilter === "concluido" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setStatusFilter("concluido")}
-            >
-              Concluídos
-            </Button>
+        <div className="bg-white rounded-lg shadow-sm border p-4 mb-6 space-y-4">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                type="text"
+                placeholder="Buscar por veículo, placa ou descrição..."
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            <div className="flex items-center space-x-2 overflow-x-auto pb-2 md:pb-0">
+              <Button
+                variant={statusFilter === "todos" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setStatusFilter("todos")}
+              >
+                Todos
+              </Button>
+              <Button
+                variant={statusFilter === "pendente" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setStatusFilter("pendente")}
+              >
+                Pendentes
+              </Button>
+              <Button
+                variant={
+                  statusFilter === "em_andamento" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => setStatusFilter("em_andamento")}
+              >
+                Em Andamento
+              </Button>
+              <Button
+                variant={
+                  statusFilter === "aguardando_pecas" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => setStatusFilter("aguardando_pecas")}
+              >
+                Aguardando Peças
+              </Button>
+              <Button
+                variant={statusFilter === "concluido" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setStatusFilter("concluido")}
+              >
+                Concluídos
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="space-y-4">
-        {filteredServicos.length > 0 ? (
-          <div className="bg-white rounded-lg shadow-sm border divide-y">
-            {filteredServicos.map((servico) => {
-              const veiculo = veiculosData.find(v => v.placa === servico.placa);
-              const veiculoId = veiculo?.id || servico.placa; // fallback to placa if vehicle not found
+        <div className="space-y-4">
+          {filteredServicos.length > 0 ? (
+            <div className="bg-white rounded-lg shadow-sm border divide-y">
+              {filteredServicos.map((servico) => {
+                const veiculo = veiculosData.find(
+                  (v) => v.placa === servico.placa
+                );
+                const veiculoId = veiculo?.id || servico.placa; // fallback to placa if vehicle not found
 
-              return (
-                <Link
-                  key={`${servico.ordensServico}-${servico.placa}`}
-                  href={`/servicos/${veiculoId}`}
-                  className="block hover:bg-gray-50 transition-colors"
-                >
-                  <div className="p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2">
-                          <h3 className="font-medium truncate">
-                            {servico.veiculo} • {servico.placa}
-                          </h3>
-                          {getPriorityBadge(servico.prioridade)}
-                        </div>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {servico.descricao}
-                        </p>
-                        <div className="mt-2 flex flex-wrap items-center gap-2">
-                          {getStatusBadge(servico.status)}
-                          <span className="text-xs text-gray-500">
-                            Entrada: {servico.dataEntrada}
-                          </span>
-                          {servico.previsaoEntrega && (
+                return (
+                  <Link
+                    key={`${servico.ordensServico}-${servico.placa}`}
+                    href={`/servicos/${veiculoId}`}
+                    className="block hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="p-4">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center space-x-2">
+                            <h3 className="font-medium truncate">
+                              {servico.veiculo} • {servico.placa}
+                            </h3>
+                            {getPriorityBadge(servico.prioridade)}
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {servico.descricao}
+                          </p>
+                          <div className="mt-2 flex flex-wrap items-center gap-2">
+                            {getStatusBadge(servico.status)}
                             <span className="text-xs text-gray-500">
-                              • Previsão: {servico.previsaoEntrega}
+                              Entrada: {servico.dataEntrada}
                             </span>
-                          )}
+                            {servico.previsaoEntrega && (
+                              <span className="text-xs text-gray-500">
+                                • Previsão: {servico.previsaoEntrega}
+                              </span>
+                            )}
+                          </div>
                         </div>
+                        <ChevronRight className="h-5 w-5 text-gray-400 ml-4 flex-shrink-0" />
                       </div>
-                      <ChevronRight className="h-5 w-5 text-gray-400 ml-4 flex-shrink-0" />
                     </div>
-                  </div>
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12 border-2 border-dashed rounded-lg">
+              <Wrench className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+              <h3 className="text-lg font-medium text-gray-900">
+                Nenhum serviço encontrado
+              </h3>
+              <p className="mt-1 text-gray-500">
+                {searchTerm || statusFilter !== "todos"
+                  ? "Nenhum serviço corresponde aos filtros selecionados."
+                  : "Você ainda não possui serviços cadastrados."}
+              </p>
+              {!searchTerm && statusFilter === "todos" && (
+                <Link href="/servicos/novo">
+                  <Button variant="outline" className="mt-4 gap-2">
+                    <Plus className="h-4 w-4" />
+                    Adicionar Serviço
+                  </Button>
                 </Link>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="text-center py-12 border-2 border-dashed rounded-lg">
-            <Wrench className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900">
-              Nenhum serviço encontrado
-            </h3>
-            <p className="mt-1 text-gray-500">
-              {searchTerm || statusFilter !== "todos"
-                ? "Nenhum serviço corresponde aos filtros selecionados."
-                : "Você ainda não possui serviços cadastrados."}
-            </p>
-            {!searchTerm && statusFilter === "todos" && (
-              <Link href="/servicos/novo">
-                <Button variant="outline" className="mt-4 gap-2">
-                  <Plus className="h-4 w-4" />
-                  Adicionar Serviço
-                </Button>
-              </Link>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }

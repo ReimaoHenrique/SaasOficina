@@ -31,6 +31,7 @@ import {
   type Orcamento,
   type StatusOrcamento,
 } from "@/data/orcamento";
+import { ProtectedRoute } from "@/components/protected-route";
 
 export default function OrcamentoDetailPage({
   params,
@@ -116,272 +117,280 @@ export default function OrcamentoDetailPage({
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-          <div className="flex items-center gap-4">
-            <Link href="/orcamento">
-              <Button variant="ghost" size="icon">
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </Link>
-            <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                <Calculator className="h-6 w-6" />
-                {orcamento.numero}
-              </h1>
-              <div className="flex items-center gap-2 mt-1">
-                <Badge
-                  className={`text-xs ${getStatusColor(orcamento.status)}`}
-                >
-                  {getStatusText(orcamento.status)}
-                </Badge>
-                <span className="text-sm text-gray-500">
-                  Criado em {orcamento.dataCriacao}
-                </span>
+    <ProtectedRoute>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <div className="flex items-center gap-4">
+              <Link href="/orcamento">
+                <Button variant="ghost" size="icon">
+                  <ArrowLeft className="h-5 w-5" />
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-2xl font-bold flex items-center gap-2">
+                  <Calculator className="h-6 w-6" />
+                  {orcamento.numero}
+                </h1>
+                <div className="flex items-center gap-2 mt-1">
+                  <Badge
+                    className={`text-xs ${getStatusColor(orcamento.status)}`}
+                  >
+                    {getStatusText(orcamento.status)}
+                  </Badge>
+                  <span className="text-sm text-gray-500">
+                    Criado em {orcamento.dataCriacao}
+                  </span>
+                </div>
               </div>
+            </div>
+
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={handlePrint} className="gap-2">
+                <Printer className="h-4 w-4" />
+                Imprimir
+              </Button>
+              <Button className="gap-2">
+                <Edit className="h-4 w-4" />
+                Editar
+              </Button>
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={handlePrint} className="gap-2">
-              <Printer className="h-4 w-4" />
-              Imprimir
-            </Button>
-            <Button className="gap-2">
-              <Edit className="h-4 w-4" />
-              Editar
-            </Button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Informações do Cliente e Veículo */}
-          <div className="lg:col-span-2 space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5" />
-                  Informações do Cliente
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Nome</p>
-                    <p className="text-sm">{orcamento.cliente}</p>
-                  </div>
-                  {orcamento.telefone && (
-                    <div className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-gray-400" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-500">
-                          Telefone
-                        </p>
-                        <p className="text-sm">{orcamento.telefone}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                {orcamento.email && (
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-gray-400" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">
-                        E-mail
-                      </p>
-                      <p className="text-sm">{orcamento.email}</p>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Car className="h-5 w-5" />
-                  Informações do Veículo
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Veículo</p>
-                    <p className="text-sm">{orcamento.veiculo}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Placa</p>
-                    <p className="text-sm font-mono">{orcamento.placa}</p>
-                  </div>
-                </div>
-                {(orcamento.marca || orcamento.modelo || orcamento.ano) && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {orcamento.marca && (
-                      <div>
-                        <p className="text-sm font-medium text-gray-500">
-                          Marca
-                        </p>
-                        <p className="text-sm">{orcamento.marca}</p>
-                      </div>
-                    )}
-                    {orcamento.modelo && (
-                      <div>
-                        <p className="text-sm font-medium text-gray-500">
-                          Modelo
-                        </p>
-                        <p className="text-sm">{orcamento.modelo}</p>
-                      </div>
-                    )}
-                    {orcamento.ano && (
-                      <div>
-                        <p className="text-sm font-medium text-gray-500">Ano</p>
-                        <p className="text-sm">{orcamento.ano}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {orcamento.observacoes && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Informações do Cliente e Veículo */}
+            <div className="lg:col-span-2 space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5" />
-                    Observações
+                    <User className="h-5 w-5" />
+                    Informações do Cliente
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Nome</p>
+                      <p className="text-sm">{orcamento.cliente}</p>
+                    </div>
+                    {orcamento.telefone && (
+                      <div className="flex items-center gap-2">
+                        <Phone className="h-4 w-4 text-gray-400" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-500">
+                            Telefone
+                          </p>
+                          <p className="text-sm">{orcamento.telefone}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {orcamento.email && (
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-gray-400" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">
+                          E-mail
+                        </p>
+                        <p className="text-sm">{orcamento.email}</p>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Car className="h-5 w-5" />
+                    Informações do Veículo
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">
+                        Veículo
+                      </p>
+                      <p className="text-sm">{orcamento.veiculo}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Placa</p>
+                      <p className="text-sm font-mono">{orcamento.placa}</p>
+                    </div>
+                  </div>
+                  {(orcamento.marca || orcamento.modelo || orcamento.ano) && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {orcamento.marca && (
+                        <div>
+                          <p className="text-sm font-medium text-gray-500">
+                            Marca
+                          </p>
+                          <p className="text-sm">{orcamento.marca}</p>
+                        </div>
+                      )}
+                      {orcamento.modelo && (
+                        <div>
+                          <p className="text-sm font-medium text-gray-500">
+                            Modelo
+                          </p>
+                          <p className="text-sm">{orcamento.modelo}</p>
+                        </div>
+                      )}
+                      {orcamento.ano && (
+                        <div>
+                          <p className="text-sm font-medium text-gray-500">
+                            Ano
+                          </p>
+                          <p className="text-sm">{orcamento.ano}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {orcamento.observacoes && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      Observações
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm whitespace-pre-wrap">
+                      {orcamento.observacoes}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
+            {/* Resumo do Orçamento */}
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5" />
+                    Resumo do Orçamento
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-green-600">
+                      R${" "}
+                      {orcamento.total.toLocaleString("pt-BR", {
+                        minimumFractionDigits: 2,
+                      })}
+                    </p>
+                    <p className="text-sm text-gray-500">Total do Orçamento</p>
+                  </div>
+
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">Prazo de Garantia:</span>
+                      <span className="font-medium">
+                        {orcamento.prazoGarantia} dias
+                      </span>
+                    </div>
+                    {orcamento.dataValidade && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">Válido até:</span>
+                        <span className="font-medium">
+                          {orcamento.dataValidade}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">Status:</span>
+                      <Badge
+                        className={`text-xs ${getStatusColor(
+                          orcamento.status
+                        )}`}
+                      >
+                        {getStatusText(orcamento.status)}
+                      </Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5" />
+                    Garantia
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm whitespace-pre-wrap">
-                    {orcamento.observacoes}
+                  <p className="text-sm text-gray-600">
+                    Todos os serviços e peças possuem garantia de{" "}
+                    {orcamento.prazoGarantia} dias contra defeitos de fabricação
+                    e mão de obra.
                   </p>
                 </CardContent>
               </Card>
-            )}
+            </div>
           </div>
 
-          {/* Resumo do Orçamento */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5" />
-                  Resumo do Orçamento
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-center">
-                  <p className="text-3xl font-bold text-green-600">
+          {/* Tabela de Serviços */}
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Serviços e Peças</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Descrição</TableHead>
+                    <TableHead className="text-center">Qtd</TableHead>
+                    <TableHead className="text-right">Preço Unit.</TableHead>
+                    <TableHead className="text-right">Total</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {orcamento.servicos.map((servico) => (
+                    <TableRow key={servico.id}>
+                      <TableCell className="font-medium">
+                        {servico.descricao}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {servico.quantidade}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        R${" "}
+                        {servico.precoUnitario.toLocaleString("pt-BR", {
+                          minimumFractionDigits: 2,
+                        })}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">
+                        R${" "}
+                        {servico.total.toLocaleString("pt-BR", {
+                          minimumFractionDigits: 2,
+                        })}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+
+              <div className="border-t pt-4 mt-4">
+                <div className="flex justify-between items-center text-lg font-semibold">
+                  <span>Total do Orçamento:</span>
+                  <span className="text-green-600">
                     R${" "}
                     {orcamento.total.toLocaleString("pt-BR", {
                       minimumFractionDigits: 2,
                     })}
-                  </p>
-                  <p className="text-sm text-gray-500">Total do Orçamento</p>
+                  </span>
                 </div>
-
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Prazo de Garantia:</span>
-                    <span className="font-medium">
-                      {orcamento.prazoGarantia} dias
-                    </span>
-                  </div>
-                  {orcamento.dataValidade && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-500">Válido até:</span>
-                      <span className="font-medium">
-                        {orcamento.dataValidade}
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Status:</span>
-                    <Badge
-                      className={`text-xs ${getStatusColor(orcamento.status)}`}
-                    >
-                      {getStatusText(orcamento.status)}
-                    </Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5" />
-                  Garantia
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600">
-                  Todos os serviços e peças possuem garantia de{" "}
-                  {orcamento.prazoGarantia} dias contra defeitos de fabricação e
-                  mão de obra.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Tabela de Serviços */}
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Serviços e Peças</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Descrição</TableHead>
-                  <TableHead className="text-center">Qtd</TableHead>
-                  <TableHead className="text-right">Preço Unit.</TableHead>
-                  <TableHead className="text-right">Total</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {orcamento.servicos.map((servico) => (
-                  <TableRow key={servico.id}>
-                    <TableCell className="font-medium">
-                      {servico.descricao}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {servico.quantidade}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      R${" "}
-                      {servico.precoUnitario.toLocaleString("pt-BR", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </TableCell>
-                    <TableCell className="text-right font-medium">
-                      R${" "}
-                      {servico.total.toLocaleString("pt-BR", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-
-            <div className="border-t pt-4 mt-4">
-              <div className="flex justify-between items-center text-lg font-semibold">
-                <span>Total do Orçamento:</span>
-                <span className="text-green-600">
-                  R${" "}
-                  {orcamento.total.toLocaleString("pt-BR", {
-                    minimumFractionDigits: 2,
-                  })}
-                </span>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }

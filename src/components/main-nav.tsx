@@ -14,6 +14,7 @@ import {
   Menu,
   X,
   FileText,
+  LogOut,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -23,6 +24,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
+import { useAuth } from "@/contexts/auth-context";
 
 interface NavItem {
   name: string;
@@ -34,19 +36,36 @@ interface NavItem {
 export function MainNav() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
 
-  const navItems: NavItem[] = [
-    { name: "Início", href: "/", icon: Home, matchExact: true },
-    {
-      name: "Orçamento",
-      href: "/orcamento",
-      icon: Calculator,
-      matchExact: false,
-    },
-    { name: "Serviços", href: "/servicos", icon: Wrench, matchExact: false },
-    { name: "Sobre", href: "/sobre", icon: Info, matchExact: true },
-    { name: "Contato", href: "/contato", icon: Phone, matchExact: true },
-  ];
+  const getNavItems = (): NavItem[] => {
+    const publicItems: NavItem[] = [
+      { name: "Início", href: "/", icon: Home, matchExact: true },
+      { name: "Sobre", href: "/sobre", icon: Info, matchExact: true },
+      { name: "Contato", href: "/contato", icon: Phone, matchExact: true },
+    ];
+
+    if (isAuthenticated) {
+      const protectedItems: NavItem[] = [
+        {
+          name: "Orçamento",
+          href: "/orcamento",
+          icon: Calculator,
+          matchExact: false,
+        },
+        {
+          name: "Serviços",
+          href: "/servicos",
+          icon: Wrench,
+          matchExact: false,
+        },
+      ];
+      // Inserir itens protegidos após "Início"
+      publicItems.splice(1, 0, ...protectedItems);
+    }
+
+    return publicItems;
+  };
 
   const isActive = (href: string, exact: boolean) => {
     return exact ? pathname === href : pathname.startsWith(href);
@@ -65,7 +84,7 @@ export function MainNav() {
           {/* Desktop Navigation - Hidden on mobile */}
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
-              {navItems.map((item) => {
+              {getNavItems().map((item) => {
                 const active = isActive(item.href, item.matchExact);
                 const Icon = item.icon;
                 return (
@@ -101,10 +120,27 @@ export function MainNav() {
               Solicitar Orçamento
             </Button>
           </Link>
-          <Button variant="outline" size="sm" className="hidden md:flex">
-            <User className="mr-2 h-4 w-4" />
-            Entrar
-          </Button>
+          {isAuthenticated ? (
+            <div className="hidden md:flex items-center gap-2">
+              <Link href="/perfil">
+                <Button variant="ghost" size="sm">
+                  <User className="mr-2 h-4 w-4" />
+                  {user?.nome}
+                </Button>
+              </Link>
+              <Button variant="outline" size="sm" onClick={logout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Sair
+              </Button>
+            </div>
+          ) : (
+            <Link href="/login">
+              <Button variant="outline" size="sm" className="hidden md:flex">
+                <User className="mr-2 h-4 w-4" />
+                Entrar
+              </Button>
+            </Link>
+          )}
 
           <Button
             variant="ghost"
@@ -126,7 +162,7 @@ export function MainNav() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t">
           <div className="container py-2 space-y-1">
-            {navItems.map((item) => {
+            {getNavItems().map((item) => {
               const active = isActive(item.href, item.matchExact);
               const Icon = item.icon;
               return (
@@ -156,14 +192,42 @@ export function MainNav() {
                   Solicitar Orçamento
                 </Button>
               </Link>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <User className="mr-2 h-4 w-4" />
-                Entrar
-              </Button>
+              {isAuthenticated ? (
+                <div className="w-full space-y-2">
+                  <Link href="/perfil" className="block">
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <User className="mr-2 h-4 w-4" />
+                      Meu Perfil
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sair
+                  </Button>
+                </div>
+              ) : (
+                <Link href="/login" className="block">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    Entrar
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
