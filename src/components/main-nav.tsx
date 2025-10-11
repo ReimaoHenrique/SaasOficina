@@ -15,6 +15,8 @@ import {
   X,
   FileText,
   LogOut,
+  BarChart3,
+  Package,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -48,6 +50,12 @@ export function MainNav() {
     if (isAuthenticated) {
       const protectedItems: NavItem[] = [
         {
+          name: "Dashboard",
+          href: "/dashboard",
+          icon: BarChart3,
+          matchExact: true,
+        },
+        {
           name: "Orçamento",
           href: "/orcamento",
           icon: Calculator,
@@ -58,6 +66,12 @@ export function MainNav() {
           href: "/servicos",
           icon: Wrench,
           matchExact: false,
+        },
+        {
+          name: "Estoque",
+          href: "/estoque",
+          icon: Package,
+          matchExact: true,
         },
       ];
       // Inserir itens protegidos após "Início"

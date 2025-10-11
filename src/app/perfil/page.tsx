@@ -6,8 +6,6 @@ import {
   User,
   Mail,
   Phone,
-  Calendar,
-  Shield,
   Settings,
   Edit,
   ArrowLeft,

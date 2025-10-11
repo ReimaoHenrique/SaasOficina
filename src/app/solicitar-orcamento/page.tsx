@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   createSolicitacao,
   type TipoServico,
@@ -578,4 +577,3 @@ export default function SolicitarOrcamentoPage() {
     </div>
   );
 }
-
