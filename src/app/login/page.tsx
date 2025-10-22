@@ -61,7 +61,7 @@ export default function LoginPage() {
 
       if (success) {
         // Redirecionar para a página principal após login bem-sucedido
-        router.push("/");
+        router.push("/dashboard");
       } else {
         setError("ID ou senha incorretos. Tente novamente.");
       }
